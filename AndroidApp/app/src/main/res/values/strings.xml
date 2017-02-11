@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">WIFISmartLock</string>
+    <string name="locklist">WIFI smart lock list</string>
+    <string name="addLock">Add a smart lock</string>
+    <string name="nolock">There is no smart lock</string>
+    <string name="postive_button">Add</string>
+    <string name="negative_button">Cancel</string>
+    <string name="about_button">About</string>
+    <string name="switchButton">ON/OFF the button</string>
+    <string name="reset_button">Reset</string>
+    <string name="setkey">Set password(only number0-255)</string>
+    <string name="apply">apply</string>
+</resources>
