@@ -6,7 +6,6 @@
  舵机左右摇摆功能
  德飞莱LY-51S独立模块开发板有舵机功能块，与arduino的连接图片和说明如下：
  http://www.doflye.net/viewthread.php?tid=5311&extra=
- 感谢以上提供参考 By wxx
 */
 #include <Servo.h> 
 #include <EEPROM.h>
@@ -111,18 +110,18 @@ void loop()
 			Serial.println("resetsuccess");
 		}
 	}
-	if(comdata=="test1"){//Debug命令
+	if(comdata=="test1"){
 		Serial.println(comdata==EEPROM.read(23));
 		Serial.println(comdata==EEPROM.read(24));
 		Serial.println(EEPROM.read(23));
 		Serial.println(EEPROM.read(24));
 	}
-	if(comdata=="test2"){//Debug命令
+	if(comdata=="test2"){
 		EEPROM.write(24,0);
 		EEPROM.write(23,0);
 		Serial.println("ok");
 	}
-	if (comdata=="set"){//Debug命令
+	if (comdata=="set"){
 		if(currentMillis-previousMillis<1000){
 			return;
 		}

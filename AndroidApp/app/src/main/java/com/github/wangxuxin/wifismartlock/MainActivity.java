@@ -107,14 +107,14 @@ public class MainActivity extends AppCompatActivity {
                                         intent.setClass(MainActivity.this, LockActivity.class);
                                         startActivity(intent);
                                     }else {
-                                        Toast.makeText(getApplicationContext(), "密码错误",
+                                        Toast.makeText(getApplicationContext(), "IP地址或密码错误1",
                                                 Toast.LENGTH_LONG).show();
                                     }
                                 }
                             }, 1000);
 
                         }else {
-                            Toast.makeText(getApplicationContext(), "IP地址错误",
+                            Toast.makeText(getApplicationContext(), "IP地址或密码错误2",
                                     Toast.LENGTH_LONG).show();
                         }
                         //execute the task
