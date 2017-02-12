@@ -1,2 +1,0 @@
-# WIFISmartLock
-WIFISmartLock
