@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class LockActivity extends AppCompatActivity {
     String lockip;
@@ -30,25 +31,56 @@ public class LockActivity extends AppCompatActivity {
             keysetButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    final EditText keysetEdit = (EditText) findViewById(R.id.keysetEdit);
+                    if ("".equals(keysetEdit.getText().toString())) {
+                        Toast.makeText(getApplicationContext(), "密码不能空白",
+                                Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    int password = 0;
+                    try {
+                        password = Integer.parseInt(keysetEdit.getText().toString());
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "密码必须为整数",
+                                Toast.LENGTH_LONG).show();
+                    }
+                    if (password <= 0 || password >= 255) {
+                        Toast.makeText(getApplicationContext(), "密码需在0-255数字之间",
+                                Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     final TCPSocket keysetSocket = new TCPSocket();
-                    final EditText keysetEdit =(EditText)findViewById(R.id.keysetEdit);
-                    //1、打开Preferences，名称为setting，如果存在则打开它，否则创建新的Preferences
-                    SharedPreferences isFirstOpen = getSharedPreferences("lock", 0);
-                    //2、让setting处于编辑状态
-                    SharedPreferences.Editor editor = isFirstOpen.edit();
-                    //3、存放数据
-                    editor.putString("password",keysetEdit.getText().toString());
-                    //4、完成提交
-                    editor.apply();
-                    keysetSocket.socket(lockip,9000,"setkey");
-                    new Handler().postDelayed(new Runnable(){
+                    keysetSocket.socket(lockip, 9000, "setkey");
+                    new Handler().postDelayed(new Runnable() {
                         public void run() {
+                            if(!"setkeying".equals(keysetSocket.echo)){
+                                Toast.makeText(getApplicationContext(), "连接超时",
+                                        Toast.LENGTH_LONG).show();
+                                return;
+                            }
                             //execute the task
-                            keysetSocket.socket(lockip,9000,keysetEdit.getText().toString());
-                            keysetSocket.socket(lockip,9000,keysetEdit.getText().toString());
-                            setContentView(R.layout.activity_lock);
+                            keysetSocket.socket(lockip, 9000, keysetEdit.getText().toString());
+                            new Handler().postDelayed(new Runnable() {
+                                public void run() {
+                                    if(!"setkeysuccess".equals(keysetSocket.echo)){
+                                        Toast.makeText(getApplicationContext(), "设置失败"+keysetSocket.echo,
+                                                Toast.LENGTH_LONG).show();
+                                        return;
+                                    }
+                                    //execute the task
+                                    //1、打开Preferences，名称为setting，如果存在则打开它，否则创建新的Preferences
+                                    SharedPreferences isFirstOpen = getSharedPreferences("lock", 0);
+                                    //2、让setting处于编辑状态
+                                    SharedPreferences.Editor editor = isFirstOpen.edit();
+                                    //3、存放数据
+                                    editor.putString("password", keysetEdit.getText().toString());
+                                    //4、完成提交
+                                    editor.apply();
+                                    setContentView(R.layout.activity_lock);
+                                }
+                            }, 2000);
                         }
-                    }, 1000);
+                    }, 2000);
                 }
             });
         }

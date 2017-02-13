@@ -66,58 +66,55 @@ public class MainActivity extends AppCompatActivity {
                 islock.socket(ipEdit.getText().toString(),9000,"islock");
                 new Handler().postDelayed(new Runnable(){
                     public void run() {
-                        if("issmartlock".equals(islock.echo)){
-
-                            if("".equals(passwordEdit.getText().toString())){
-                                //1、打开Preferences，名称为setting，如果存在则打开它，否则创建新的Preferences
-                                SharedPreferences isFirstOpen = getSharedPreferences("lock", 0);
-                                //2、让setting处于编辑状态
-                                SharedPreferences.Editor editor = isFirstOpen.edit();
-                                //3、存放数据
-                                editor.putString("ip",ipEdit.getText().toString());
-                                //4、完成提交
-                                editor.apply();
-
-                                Intent intent = new Intent();
-                                intent.putExtra("type","1");
-                                intent.setClass(MainActivity.this, LockActivity.class);
-                                startActivity(intent);
-                                return;
-                            }
-                            islock.socket(ipEdit.getText().toString(),9000,"key");
-                            islock.socket(ipEdit.getText().toString(),9000,passwordEdit.getText().toString());
-                            new Handler().postDelayed(new Runnable(){
-                                public void run() {
-                                    //execute the task
-                                    if("keycorrect".equals(islock.echo)){
-                                        Toast.makeText(getApplicationContext(), "连接成功",
-                                                Toast.LENGTH_SHORT).show();
-                                        //1、打开Preferences，名称为setting，如果存在则打开它，否则创建新的Preferences
-                                        SharedPreferences isFirstOpen = getSharedPreferences("lock", 0);
-                                        //2、让setting处于编辑状态
-                                        SharedPreferences.Editor editor = isFirstOpen.edit();
-                                        //3、存放数据
-                                        editor.putString("ip",ipEdit.getText().toString());
-                                        editor.putString("password",passwordEdit.getText().toString());
-                                        //4、完成提交
-                                        editor.apply();
-
-                                        Intent intent = new Intent();
-                                        //intent.putExtra("type",type+"/"+l);
-                                        intent.setClass(MainActivity.this, LockActivity.class);
-                                        startActivity(intent);
-                                    }else {
-                                        Toast.makeText(getApplicationContext(), "密码错误",
-                                                Toast.LENGTH_LONG).show();
-                                    }
-                                }
-                            }, 1000);
-
-                        }else {
-                            Toast.makeText(getApplicationContext(), "IP地址错误",
+                        if(!"issmartlock".equals(islock.echo)){
+                            Toast.makeText(getApplicationContext(), "IP地址错误或连接超时",
                                     Toast.LENGTH_LONG).show();
                         }
-                        //execute the task
+                        if("".equals(passwordEdit.getText().toString())){
+                            //1、打开Preferences，名称为setting，如果存在则打开它，否则创建新的Preferences
+                            SharedPreferences isFirstOpen = getSharedPreferences("lock", 0);
+                            //2、让setting处于编辑状态
+                            SharedPreferences.Editor editor = isFirstOpen.edit();
+                            //3、存放数据
+                            editor.putString("ip",ipEdit.getText().toString());
+                            //4、完成提交
+                            editor.apply();
+
+                            Intent intent = new Intent();
+                            intent.putExtra("type","1");
+                            intent.setClass(MainActivity.this, LockActivity.class);
+                            startActivity(intent);
+                            return;
+                        }
+                        islock.socket(ipEdit.getText().toString(),9000,passwordEdit.getText().toString());
+                        new Handler().postDelayed(new Runnable(){
+                            public void run() {
+                                //execute the task
+                                if("unknown".equals(islock.echo)){
+                                    Toast.makeText(getApplicationContext(), "连接超时或密码错误",
+                                            Toast.LENGTH_LONG).show();
+                                    return;
+                                }
+                                if("keycorrect".equals(islock.echo)){
+                                    Toast.makeText(getApplicationContext(), "连接成功",
+                                            Toast.LENGTH_SHORT).show();
+                                    //1、打开Preferences，名称为setting，如果存在则打开它，否则创建新的Preferences
+                                    SharedPreferences isFirstOpen = getSharedPreferences("lock", 0);
+                                    //2、让setting处于编辑状态
+                                    SharedPreferences.Editor editor = isFirstOpen.edit();
+                                    //3、存放数据
+                                    editor.putString("ip",ipEdit.getText().toString());
+                                    editor.putString("password",passwordEdit.getText().toString());
+                                    //4、完成提交
+                                    editor.apply();
+
+                                    Intent intent = new Intent();
+                                    //intent.putExtra("type",type+"/"+l);
+                                    intent.setClass(MainActivity.this, LockActivity.class);
+                                    startActivity(intent);
+                                }
+                            }
+                        }, 1000);
                     }
                 }, 1000);
             }

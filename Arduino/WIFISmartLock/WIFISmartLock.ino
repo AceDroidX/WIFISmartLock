@@ -10,6 +10,8 @@
 */
 #include <Servo.h> 
 #include <EEPROM.h>
+
+#define SERIAL_BUFFER_SIZE 128
  
 Servo myservo;  // 
                 // 最多可以控制8路舵机
@@ -21,10 +23,14 @@ int lockzt=0;//0锁 1没锁
 unsigned long previousMillis = 0;
 unsigned long keyMillis = 0;
 
+unsigned int versionCode = 2;
+unsigned long versionName = 1.1;
+
 //初始化
 void setup() 
 { 
-  Serial.begin(9600);
+  //Serial.begin(9600);
+  Serial.begin(115200,SERIAL_8N1);
   myservo.attach(9);  // 舵机控制信号引脚 
   myservo.write(90);              // 输入对应的角度值，舵机会转到此位置
 } 
@@ -62,10 +68,15 @@ void loop()
 			Serial.println("notlock");
 		}
 	}
+	if(atoi(comdata.c_str())!=0&&atoi(comdata.c_str())==EEPROM.read(24)){
+		keyMillis=currentMillis;
+		Serial.println("keycorrect");
+	}
 	if(comdata=="setkey"){
 		if(EEPROM.read(23)==0){
 			zt=3;
 			comdata="";
+			Serial.println("setkeying");
 			while (zt==3){
 				while (Serial.available() > 0)  {
 					comdata += char(Serial.read());
@@ -81,35 +92,37 @@ void loop()
 			}
 		}
 	}
-	if(atoi(comdata.c_str())!=0&&atoi(comdata.c_str())==EEPROM.read(24)){
-		keyMillis=currentMillis;
-		Serial.println("keycorrect");
-	}
 	if(comdata=="switch"){
-		Serial.println(currentMillis-keyMillis);
-		if(currentMillis-keyMillis<500){
+		if(currentMillis-keyMillis<1000){
 			if(currentMillis-previousMillis<1000){
 				return;
 			}
 			previousMillis=currentMillis;
 			if(zt==0){
 				myservo.write(60);
+				delay(500);
+				myservo.write(70);//锁住的角度
 				zt=1;
 				Serial.println("zt1");
 			}
 			else if(zt==1){
-				myservo.write(100);
+				myservo.write(110);
+				delay(500);
+				myservo.write(100);//没锁的角度
 				zt=0;
 				Serial.println("zt0");
 			}
 		}
 	}
 	if(comdata=="reset"){
-		if(currentMillis-keyMillis<500){
+		if(currentMillis-keyMillis<1000){
 			EEPROM.write(24,0);
 			EEPROM.write(23,0);
 			Serial.println("resetsuccess");
 		}
+	}
+	if(comdata=="version"){
+		Serial.println(versionCode+" "+versionName);
 	}
 	if(comdata=="test1"){//Debug命令
 		Serial.println(comdata==EEPROM.read(23));

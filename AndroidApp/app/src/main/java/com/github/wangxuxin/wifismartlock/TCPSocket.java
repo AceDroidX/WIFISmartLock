@@ -15,6 +15,7 @@ public class TCPSocket {
     String echo="unknown";
 
     void socket(final String name, final int port, final String str){
+        echo="unknown";
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -23,7 +24,7 @@ public class TCPSocket {
                 Socket client = null;
                 try {
                     client = new Socket(name, port);
-                    client.setSoTimeout(1000);
+                    client.setSoTimeout(500);
                     //获取Socket的输出流，用来发送数据到服务端
                     PrintStream out = new PrintStream(client.getOutputStream());
                     //获取Socket的输入流，用来接收从服务端发送过来的数据
@@ -35,7 +36,13 @@ public class TCPSocket {
                     Log.i("wxxDebug1",echo);
                     client.close();
                 }catch(IOException e) {
+                    Log.e("socket",e.toString());
                     System.out.println("Time out, No response");
+                    try {
+                        client.close();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                 }
             }
         });

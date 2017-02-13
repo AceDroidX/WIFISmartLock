@@ -9,6 +9,6 @@
     <string name="about_button">关于</string>
     <string name="switchButton">开关锁</string>
     <string name="reset_button">重置</string>
-    <string name="setkey">设置密码(只支持数字0-255)</string>
+    <string name="setkey">设置密码(只支持数字0-255之间)</string>
     <string name="apply">确定</string>
 </resources>
