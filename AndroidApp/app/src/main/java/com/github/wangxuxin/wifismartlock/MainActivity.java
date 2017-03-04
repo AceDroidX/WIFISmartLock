@@ -28,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
         */
 
+        //------------------------------------------------------------------
+        //------------------------------------------------------------------
+        //------------------------------------------------------------------
         SharedPreferences locklistSP = getSharedPreferences("lock", 0);
         final String lockip = locklistSP.getString("ip",null);
         String lockpw = locklistSP.getString("password",null);
@@ -39,6 +42,10 @@ public class MainActivity extends AppCompatActivity {
             ipEdit.setText(lockip);
             passwordEdit.setText(lockpw);
         }
+        //------------------------------------------------------------------
+        //------------------------------------------------------------------
+        //------------------------------------------------------------------
+
         /*
         ScanDeviceTool ips = new ScanDeviceTool();
         ips.scan();
@@ -61,16 +68,15 @@ public class MainActivity extends AppCompatActivity {
                 if("".equals(ipEdit.getText().toString())){
                     Toast.makeText(getApplicationContext(), "IP地址不能为空",
                             Toast.LENGTH_LONG).show();
+                    return;
                 }
                 final TCPSocket islock = new TCPSocket();
-                islock.socket(ipEdit.getText().toString(),9000,"islock");
+                islock.socket(ipEdit.getText().toString(),9000,"iskey "+passwordEdit.getText().toString());
                 new Handler().postDelayed(new Runnable(){
                     public void run() {
-                        if(!"issmartlock".equals(islock.echo)){
-                            Toast.makeText(getApplicationContext(), "IP地址错误或连接超时",
+                        if("notInitialize".equals(islock.echo)){
+                            Toast.makeText(getApplicationContext(), "进入设置模式",
                                     Toast.LENGTH_LONG).show();
-                        }
-                        if("".equals(passwordEdit.getText().toString())){
                             //1、打开Preferences，名称为setting，如果存在则打开它，否则创建新的Preferences
                             SharedPreferences isFirstOpen = getSharedPreferences("lock", 0);
                             //2、让setting处于编辑状态
@@ -84,41 +90,44 @@ public class MainActivity extends AppCompatActivity {
                             intent.putExtra("type","1");
                             intent.setClass(MainActivity.this, LockActivity.class);
                             startActivity(intent);
-                            return;
                         }
-                        islock.socket(ipEdit.getText().toString(),9000,passwordEdit.getText().toString());
-                        new Handler().postDelayed(new Runnable(){
-                            public void run() {
-                                //execute the task
-                                if("unknown".equals(islock.echo)){
-                                    Toast.makeText(getApplicationContext(), "连接超时或密码错误",
-                                            Toast.LENGTH_LONG).show();
-                                    return;
-                                }
-                                if("keycorrect".equals(islock.echo)){
-                                    Toast.makeText(getApplicationContext(), "连接成功",
-                                            Toast.LENGTH_SHORT).show();
-                                    //1、打开Preferences，名称为setting，如果存在则打开它，否则创建新的Preferences
-                                    SharedPreferences isFirstOpen = getSharedPreferences("lock", 0);
-                                    //2、让setting处于编辑状态
-                                    SharedPreferences.Editor editor = isFirstOpen.edit();
-                                    //3、存放数据
-                                    editor.putString("ip",ipEdit.getText().toString());
-                                    editor.putString("password",passwordEdit.getText().toString());
-                                    //4、完成提交
-                                    editor.apply();
+                        else if("keywrong".equals(islock.echo)){
+                            Toast.makeText(getApplicationContext(), "密码错误",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        else if("keycorrect".equals(islock.echo)){
+                            Toast.makeText(getApplicationContext(), "连接成功",
+                                    Toast.LENGTH_SHORT).show();
+                            //1、打开Preferences，名称为setting，如果存在则打开它，否则创建新的Preferences
+                            SharedPreferences isFirstOpen = getSharedPreferences("lock", 0);
+                            //2、让setting处于编辑状态
+                            SharedPreferences.Editor editor = isFirstOpen.edit();
+                            //3、存放数据
+                            editor.putString("ip",ipEdit.getText().toString());
+                            editor.putString("password",passwordEdit.getText().toString());
+                            //4、完成提交
+                            editor.apply();
 
-                                    Intent intent = new Intent();
-                                    //intent.putExtra("type",type+"/"+l);
-                                    intent.setClass(MainActivity.this, LockActivity.class);
-                                    startActivity(intent);
-                                }
-                            }
-                        }, 1000);
+                            Intent intent = new Intent();
+                            //intent.putExtra("type",type+"/"+l);
+                            intent.setClass(MainActivity.this, LockActivity.class);
+                            startActivity(intent);
+                        }else if("unknown".equals(islock.echo)){
+                            Toast.makeText(getApplicationContext(), "连接超时",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(), "未知错误",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }, 1000);
             }
         });
+
+        //------------------------------------------------------------------
+        //------------------------------------------------------------------
+        //------------------------------------------------------------------
         aboutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

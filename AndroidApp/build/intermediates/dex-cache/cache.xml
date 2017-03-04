@@ -48,21 +48,21 @@
     </item>
     <item
         is-multidex="true"
-        jar="C:\Users\a1274\Documents\IntelliJIDEAProjects\WIFISmartLock\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.0.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="26c6eef571592c91f29e56fda0bac73321de0c92">
-        <dex dex="C:\Users\a1274\Documents\IntelliJIDEAProjects\WIFISmartLock\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-fragment-25.0.1_09392ad8169613e05d861dc01045f602ef08d066\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="C:\Users\a1274\Documents\IntelliJIDEAProjects\WIFISmartLock\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.0.1\jars\libs\internal_impl-25.0.1.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="f83b00041ecfba705603fec40363416c7de69719">
         <dex dex="C:\Users\a1274\Documents\IntelliJIDEAProjects\WIFISmartLock\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-25.0.1_108bd3c3bb0a2c0bb68f9a5bafd332138a1d581f\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\a1274\Documents\IntelliJIDEAProjects\WIFISmartLock\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.0.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="26c6eef571592c91f29e56fda0bac73321de0c92">
+        <dex dex="C:\Users\a1274\Documents\IntelliJIDEAProjects\WIFISmartLock\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-fragment-25.0.1_09392ad8169613e05d861dc01045f602ef08d066\classes.dex" />
     </item>
     <item
         is-multidex="false"
@@ -142,7 +142,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="39287441eacd15dbf2cafba0f63c1c8665217daa">
+        sha1="3bd0d6709577e201d1e2dcf63eeec010ec3ac53c">
         <dex dex="C:\Users\a1274\Documents\IntelliJIDEAProjects\WIFISmartLock\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_c7f5885fee3b2526ace35861a40499dfd4d4d834\classes.dex" />
     </item>
     <item
@@ -151,7 +151,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="fb7e6ec89d7be8b574341ef4ff29b6d3c1c950f6">
+        sha1="f0a34edaaf71ef9202cfe669f7765273b6d66e47">
         <dex dex="C:\Users\a1274\Documents\IntelliJIDEAProjects\WIFISmartLock\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_fedd7a7833843598f30d00c6e70912f3bb3361f1\classes.dex" />
     </item>
     <item
