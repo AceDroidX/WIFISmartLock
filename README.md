@@ -1,4 +1,5 @@
 # WIFISmartLock
+#### 注意 本项目不再更新 新方案在https://github.com/wangxuxin/SmartHome
 WIFISmartLock
 WIFI智能锁
 
